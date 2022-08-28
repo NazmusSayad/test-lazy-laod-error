@@ -1,9 +1,9 @@
 import { useEffect, useState, Suspense, lazy } from 'react'
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import Header from './layouts/Header/Header'
+import NoInternet from './layouts/NoInternet/NoInternet'
 import Error404 from './pages/404/404'
 const initialQuotes = JSON.parse(localStorage.getItem('quotes'))
-const NoNetwork = <h1>No Network!</h1>
 
 const retry = (importFn, retriesLeft = 50, interval = 1000) => {
   return new Promise((resolve, reject) => {
@@ -11,7 +11,7 @@ const retry = (importFn, retriesLeft = 50, interval = 1000) => {
       .then(resolve)
       .catch(error => {
         resolve({
-          default: NoNetwork,
+          default: NoInternet,
         })
 
         /* 
