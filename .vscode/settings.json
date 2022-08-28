@@ -1,0 +1,8 @@
+{
+  "path-autocomplete.pathMappings": {
+    "%PUBLIC_URL%": "${folder}/public"
+  },
+  "path-intellisense.mappings": {
+    "%PUBLIC_URL%": "${workspaceFolder}/public"
+  }
+}

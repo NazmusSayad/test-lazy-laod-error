@@ -1,0 +1,34 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 8rem;
+  background: #008080;
+  color: #f1f2f3;
+
+  &__logo {
+    font-weight: normal;
+  }
+
+  &__nav {
+  }
+}
+
+.list {
+  list-style: none;
+  display: flex;
+
+  &__item {
+    margin-left: 2.5rem;
+    font-size: 2rem;
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    :global(a.active) {
+      color: #88dfdf;
+    }
+  }
+}

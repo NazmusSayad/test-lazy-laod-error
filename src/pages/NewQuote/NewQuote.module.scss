@@ -1,0 +1,42 @@
+.new {
+  &__form {
+    max-width: 60rem;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 3rem;
+    margin-top: 4rem;
+    margin-inline: auto;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 1rem #bbb;
+
+    label {
+      font-weight: bold;
+      margin-bottom: 0.3rem;
+    }
+
+    input,
+    textarea {
+      background: #f0f0f0;
+      outline: 1px solid #ccc;
+      border-radius: 0.25rem;
+      border: 0;
+      margin-bottom: 1.5rem;
+      padding: 0.5rem;
+
+      &:focus {
+        background: #d0e6e6;
+      }
+    }
+
+    button {
+      border-radius: 0.4rem;
+      align-self: flex-end;
+      background: #008080;
+      color: #f1f2f3;
+      padding: 0.7rem 2rem;
+      border: 0;
+      outline: 0;
+    }
+  }
+}
