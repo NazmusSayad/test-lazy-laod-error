@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 const QuoteItem = ({ quote }) => {
   return (
     <div>
-      <Link to={'' + quote.id}>___</Link>
+      <Link to={quote.id}>{quote.text}</Link>
     </div>
   )
 }

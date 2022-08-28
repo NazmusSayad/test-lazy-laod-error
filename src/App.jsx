@@ -4,7 +4,6 @@ import Header from './layouts/Header/Header'
 import NoInternet from './layouts/NoInternet/NoInternet'
 import Error404 from './pages/404/404'
 const initialQuotes = JSON.parse(localStorage.getItem('quotes'))
-
 const retry = (importFn, retriesLeft = 50, interval = 1000) => {
   return new Promise((resolve, reject) => {
     importFn()
@@ -28,11 +27,21 @@ const retry = (importFn, retriesLeft = 50, interval = 1000) => {
   })
 }
 
-const AllQuotes = lazy(() => retry(() => import('./pages/AllQuotes/AllQuotes')))
-const NewQuote = lazy(() => retry(() => import('./pages/NewQuote/NewQuote')))
-const OneQuote = lazy(() => retry(() => import('./pages/OneQuote/OneQuote')))
+const getComponents = () => {
+  return {
+    AllQuotes: lazy(() => retry(() => import('./pages/AllQuotes/AllQuotes'))),
+    NewQuote: lazy(() => retry(() => import('./pages/NewQuote/NewQuote'))),
+    OneQuote: lazy(() => retry(() => import('./pages/OneQuote/OneQuote'))),
+  }
+}
+
+const useComponent = () => {
+  const [components, setComponents] = useState(() => getComponents())
+  return [components, () => setComponents(getComponents())]
+}
 
 const App = () => {
+  const [components, resetComponents] = useComponent()
   const [quotes, setQuotes] = useState(initialQuotes || [])
 
   useEffect(() => {
@@ -48,9 +57,33 @@ const App = () => {
           <Route path="/" element={<Navigate to="/quotes" />} />
 
           <Route path="/quotes">
-            <Route index element={<AllQuotes quotes={quotes} />} />
-            <Route path="new" element={<NewQuote setQuotes={setQuotes} />} />
-            <Route path=":quoteId" element={<OneQuote quotes={quotes} />} />
+            <Route
+              index
+              element={
+                <components.AllQuotes
+                  quotes={quotes}
+                  loadAgain={resetComponents}
+                />
+              }
+            />
+            <Route
+              path="new"
+              element={
+                <components.NewQuote
+                  setQuotes={setQuotes}
+                  loadAgain={resetComponents}
+                />
+              }
+            />
+            <Route
+              path=":quoteId"
+              element={
+                <components.OneQuote
+                  quotes={quotes}
+                  loadAgain={resetComponents}
+                />
+              }
+            />
           </Route>
 
           <Route path="*" element={<Error404 />} />
