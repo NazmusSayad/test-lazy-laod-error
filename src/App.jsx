@@ -1,18 +1,17 @@
 import { useEffect, useState, Suspense, lazy } from 'react'
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import Header from './layouts/Header/Header'
+import Error404 from './pages/404/404'
+const initialQuotes = JSON.parse(localStorage.getItem('quotes'))
+const NoNetwork = <h1>No Network!</h1>
 
-function retry(fn, retriesLeft = 50, interval = 1000) {
+const retry = (importFn, retriesLeft = 50, interval = 1000) => {
   return new Promise((resolve, reject) => {
-    fn()
-      .then(data => {
-        console.log({ data })
-
-        resolve(data)
-      })
+    importFn()
+      .then(resolve)
       .catch(error => {
         resolve({
-          default: Header,
+          default: NoNetwork,
         })
 
         /* 
@@ -22,7 +21,7 @@ function retry(fn, retriesLeft = 50, interval = 1000) {
             return
           }
 
-          retry(fn, retriesLeft--, interval).then(resolve, reject)
+          retry(importFn, retriesLeft--, interval).then(resolve, reject)
         }, interval) 
         */
       })
@@ -33,17 +32,12 @@ const AllQuotes = lazy(() => retry(() => import('./pages/AllQuotes/AllQuotes')))
 const NewQuote = lazy(() => retry(() => import('./pages/NewQuote/NewQuote')))
 const OneQuote = lazy(() => retry(() => import('./pages/OneQuote/OneQuote')))
 
-import Error404 from './pages/404/404'
-const initialQuotes = JSON.parse(localStorage.getItem('quotes'))
-
 const App = () => {
   const [quotes, setQuotes] = useState(initialQuotes || [])
 
   useEffect(() => {
     localStorage.setItem('quotes', JSON.stringify(quotes))
   }, [quotes])
-
-  console.log(AllQuotes._payload._status)
 
   return (
     <BrowserRouter>

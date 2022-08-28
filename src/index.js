@@ -28,8 +28,8 @@ const root = createRoot(rootElement)
 
 root.render(
   <Provider store={store}>
-    <ErrorBoundary>
-      <App />
-    </ErrorBoundary>
+    {/* <ErrorBoundary> */}
+    <App />
+    {/* </ErrorBoundary> */}
   </Provider>
 )
